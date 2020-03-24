@@ -4,10 +4,12 @@ stake=100
 IS_WIN=1
 IS_LOST=0
 
+#CALCULATING STAKE PERCENTAGE
 fiftyPercent=`echo "$stake*0.5"|bc`
 lowerStakePercent=${fiftyPercent%.*}
 higherStakePercent=$(( $stake+$lowerStakePercent ))
 
+#PLACING BET
 while [ true ]
 do
 bet=$(( RANDOM%2 ))
