@@ -4,9 +4,9 @@
 stake=100
 days=0
 totalStakes=0
-indexWin=0
-indexLost=0
-
+index=0
+luckyDay=50
+unluckyDay=150
 #CONSTANTS
 IS_WIN=1
 IS_LOST=0
@@ -44,17 +44,32 @@ echo $stake
 #GAMBLER PLAYING FOR MAXIMUM_DAYS
 while [ $days -ne $MAXIMUM_DAYS ]
 do
-   stakeAfterBet=$( placeBet )
-   if (( $stakeAfterBet>100 ))
-   then
-      win[ (( indexWin++ )) ]=$stakeAfterBet
-   elif (( $stakeAfterBet<100 ))
-   then
-      lost[ (( indexLost++ )) ]=$stakeAfterBet
-   fi
-   totalStakes=$(( $totalStakes+$stakeAfterBet ))
+   stakesAfterBet[(( index++ ))]=$( placeBet )
    (( days++ ))
 done
 
-daysWon=${#win[@]}
-daysLost=${#lost[@]}
+daysWon=0
+daysLost=0
+for (( i=0 ; i<${#stakesAfterBet[@]} ; i++ ))
+do
+	if (( ${stakesAfterBet[i]}>100 ))
+	then
+		(( daysWon++ ))
+	elif (( ${stakesAfterBet[i]}<100 ))
+	then
+		(( daysLost++ ))
+	fi
+done
+
+#FINDING THE LUCKY AND UNLUCKY DAY
+for (( i=0 ; i<${#stakesAfterBet[@]} ; i++ ))
+do
+	if (( $luckyDay<${stakesAfterBet[i]} ))
+	then
+		luckyDay=$(( $i+1 ))
+	fi
+	if (( $unluckyDay>${stakesAfterBet[i]} ))
+	then
+		unluckyDay=$(( $i+1 ))
+	fi
+done
