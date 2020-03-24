@@ -1,9 +1,11 @@
-#!/bin/bash -x
+!/bin/bash -x
 
 #VARIBLES
 stake=100
 days=0
 totalStakes=0
+indexWin=0
+indexLost=0
 
 #CONSTANTS
 IS_WIN=1
@@ -22,18 +24,18 @@ do
 bet=$(( RANDOM%2 ))
 if [ $bet -eq $IS_WIN ]
 then
-	(( stake++ ))
-	if [ $stake -eq $higherStakePercent ]
-	then
-		break
-	fi
+   (( stake++ ))
+   if [ $stake -eq $higherStakePercent ]
+   then
+      break
+   fi
 elif [ $bet -eq $IS_LOST ]
 then
-	(( stake-- ))
-	if [ $stake -eq $lowerStakePercent ]
-	then
-		break
-	fi
+   (( stake-- ))
+   if [ $stake -eq $lowerStakePercent ]
+   then
+      break
+   fi
 fi
 done
 echo $stake
@@ -42,8 +44,17 @@ echo $stake
 #GAMBLER PLAYING FOR MAXIMUM_DAYS
 while [ $days -ne $MAXIMUM_DAYS ]
 do
-	stakeAfterBet=$( placeBet )
-	totalStakes=$(( $totalStakes+$stakeAfterBet ))
-	(( days++ ))
+   stakeAfterBet=$( placeBet )
+   if (( $stakeAfterBet>100 ))
+   then
+      win[ (( indexWin++ )) ]=$stakeAfterBet
+   elif (( $stakeAfterBet<100 ))
+   then
+      lost[ (( indexLost++ )) ]=$stakeAfterBet
+   fi
+   totalStakes=$(( $totalStakes+$stakeAfterBet ))
+   (( days++ ))
 done
 
+daysWon=${#win[@]}
+daysLost=${#lost[@]}
