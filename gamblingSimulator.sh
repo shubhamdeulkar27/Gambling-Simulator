@@ -39,7 +39,7 @@ done
 echo $stake
 }
 
-#GAMBLER PLAYING FOR MAXIMUM_DAYS
+#GAMBLER PLAYING FOR MAX_DAYS
 while [ $days -ne $MAXIMUM_DAYS ]
 do
 	stakeAfterBet=$( placeBet )
