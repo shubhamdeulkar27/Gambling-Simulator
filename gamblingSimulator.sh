@@ -1,7 +1,6 @@
 #!/bin/bash -x
 
 stake=100
-
 IS_WIN=1
 IS_LOST=0
 
