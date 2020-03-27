@@ -8,22 +8,26 @@ fiftyPercent=`echo "$stake*0.5"|bc`
 lowerStakePercent=${fiftyPercent%.*}
 higherStakePercent=$(( $stake+$lowerStakePercent ))
 
-while [ true ]
-do
+function placeBet(){
 bet=$(( RANDOM%2 ))
 if [ $bet -eq $IS_WIN ]
 then
 	(( stake++ ))
-	if [ $stake -eq $higherStakePercent ]
-	then
-		break
-	fi
 elif [ $bet -eq $IS_LOST ]
 then
 	(( stake-- ))
-	if [ $stake -eq $lowerStakePercent ]
-	then
-		break
-	fi
 fi
-done
+}
+
+function play(){
+	while [ true ]
+	do
+		placeBet
+		if [ $stake -eq $lowerStakePercent ] || [ $stake -eq $higherStakePercent ]
+		then
+			break
+		fi
+	done
+}
+
+play
